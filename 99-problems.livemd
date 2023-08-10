@@ -1,0 +1,113 @@
+# 99 problems
+
+```elixir
+ExUnit.start(autostart: false)
+```
+
+## Intro
+
+I'm doing the "99 problems" in Elixir to learn the language.
+
+* [99 Lisp Problems](https://www.ic.unicamp.br/~meidanis/courses/mc336/problemas-lisp/L-99_Ninety-Nine_Lisp_Problems.html)
+* [99 Prolog Problems](https://www.ic.unicamp.br/~meidanis/courses/mc336/2009s2/prolog/problemas/)
+
+## Problem 1
+
+Find the last element of a list.
+
+```elixir
+defmodule Problem1 do
+  @spec my_last(nonempty_list()) :: any()
+  def my_last([last]) do
+    last
+  end
+
+  def my_last([_ | tail]) do
+    my_last(tail)
+  end
+end
+```
+
+```elixir
+defmodule Problem1Tests do
+  use ExUnit.Case
+
+  test "Empty list" do
+    catch_error(Problem1.my_last([]))
+  end
+
+  test "Singleton" do
+    assert Problem1.my_last([:last]) == :last
+  end
+
+  test "Various lists" do
+    assert Problem1.my_last([:a, :b, :c]) == :c
+    assert Problem1.my_last([1, 2]) == 2
+  end
+end
+
+ExUnit.run()
+```
+
+## Problem 2
+
+```elixir
+defmodule Problem2 do
+  @spec last_but_one(nonempty_list()) :: nonempty_list()
+  def last_but_one([last1, last2]) do
+    [last1, last2]
+  end
+
+  def last_but_one([_ | tail]) do
+    last_but_one(tail)
+  end
+end
+```
+
+```elixir
+defmodule Problem2Tests do
+  use ExUnit.Case
+
+  test "Empty list" do
+    catch_error(Problem2.last_but_one([]))
+  end
+
+  test "Singleton" do
+    catch_error(Problem2.last_but_one([:one]))
+  end
+
+  test "Two-element list" do
+    assert Problem2.last_but_one([:a, :b]) == [:a, :b]
+  end
+
+  test "Various lists" do
+    assert Problem2.last_but_one([:a, :b, :c]) == [:b, :c]
+    assert Problem2.last_but_one(~c"abc") == ~c"bc"
+  end
+end
+
+ExUnit.run()
+```
+
+## Problem 3
+
+```elixir
+defmodule Problem3 do
+  @spec element_at(nonempty_list(), pos_integer()) :: any()
+  def element_at([head | _], 1) do
+    head
+  end
+
+  def element_at([_ | tail], n) do
+    element_at(tail, n - 1)
+  end
+end
+```
+
+```elixir
+
+```
+
+```elixir
+Problem3.element_at([:a, :b, :c], 2)
+```
