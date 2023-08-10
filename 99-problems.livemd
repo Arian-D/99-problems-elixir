@@ -105,9 +105,51 @@ end
 ```
 
 ```elixir
+defmodule Problem3Tests do
+  use ExUnit.Case
 
+  test "Index out of bound failure" do
+    catch_error(Problem3.element_at([], 1))
+    catch_error(Problem3.element_at([:a], 2))
+    catch_error(Problem3.element_at([:a, :b], -1))
+  end
+
+  test "Singleton" do
+    assert Problem3.element_at([:a], 1) == :a
+  end
+
+  test "List" do
+    assert Problem3.element_at([:a, :b, :c], 3) == :c
+    assert Problem3.element_at(~w(🙂 😯 😠), 2) == "😯"
+  end
+end
+
+ExUnit.run()
+```
+
+## Problem 4
+
+```elixir
+defmodule Problem4 do
+  @spec list_length(list()) :: non_neg_integer()
+  def list_length([]), do: 0
+  def list_length([_ | tail]), do: 1 + list_length(tail)
+end
 ```
 
 ```elixir
-Problem3.element_at([:a, :b, :c], 2)
+defmodule Problem4Tests do
+  use ExUnit.Case
+
+  test "Empty list" do
+    assert Problem4.list_length([]) == 0
+  end
+
+  test "Lists" do
+    assert Problem4.list_length([:one]) == 1
+    assert Problem4.list_length([:first, :second]) == 2
+  end
+end
+
+ExUnit.run()
 ```
