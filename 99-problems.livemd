@@ -153,3 +153,159 @@ end
 
 ExUnit.run()
 ```
+
+## Problem 5
+
+```elixir
+defmodule Problem5 do
+  @spec reverse(list()) :: list()
+  def reverse([]), do: []
+  def reverse([head | tail]), do: reverse(tail) ++ [head]
+end
+```
+
+```elixir
+defmodule Problem5Tests do
+  use ExUnit.Case
+
+  test "Empty list" do
+    assert Problem5.reverse([]) == []
+  end
+
+  test "Various lists" do
+    assert Problem5.reverse([:a, :b, :c]) == [:c, :b, :a]
+    assert Problem5.reverse(~w(three two one)) == ~w(one two three)
+  end
+end
+
+ExUnit.run()
+```
+
+## Problem 6
+
+```elixir
+defmodule Problem6 do
+  @spec is_palindrome(list()) :: boolean()
+  def is_palindrome(list), do: list == Problem5.reverse(list)
+end
+```
+
+```elixir
+defmodule Problem6Tests do
+  use ExUnit.Case
+
+  test "Empty list" do
+    assert Problem6.is_palindrome([])
+  end
+
+  test "Various lists" do
+    assert Problem6.is_palindrome([8, 0, 0, 8])
+    assert Problem6.is_palindrome(~c"racecar")
+  end
+
+  test "Non palindromes" do
+    refute Problem6.is_palindrome(~w(not a palindrome))
+    refute Problem6.is_palindrome([:a, :b, :c])
+  end
+end
+
+ExUnit.run()
+```
+
+## Problem 7
+
+```elixir
+defmodule Problem7 do
+  @spec flatten(list()) :: list()
+  def flatten([head | tail]) when is_list(head) do
+    flatten(head) ++ flatten(tail)
+  end
+
+  def flatten([head | tail]), do: [head | flatten(tail)]
+  def flatten([]), do: []
+end
+```
+
+```elixir
+Problem7.flatten([:a, [:b, [:c, :d], :e]])
+```
+
+## Problem 8
+
+```elixir
+defmodule Problem8 do
+  @spec compress(list()) :: list()
+  def compress([head, head | tail]), do: compress([head | tail])
+  def compress([head | tail]), do: [head | compress(tail)]
+  def compress([]), do: []
+end
+```
+
+```elixir
+Problem8.compress([1, 1, 1, 1, 12, 2, 2, 2, 2, 3, 3, 3, 3, 4, 4])
+```
+
+## Problem 9 (TODO: Move to P13)
+
+```elixir
+defmodule Problem9 do
+  @spec pack(list()) :: list()
+  def pack([head, head | tail]), do: pack([[head, head] | tail])
+  def pack([head1, head2 | tail]), do: [[head1] | pack([head2 | tail])]
+  def pack([[head | tail1] | [head | tail2]]), do: [[head, head | tail1] | pack(tail2)]
+  def pack([l1 | l2]) when is_list(l1) and is_list(l2), do: [l1 | pack(l2)]
+  def pack([]), do: []
+end
+```
+
+```elixir
+Problem9.pack([1, 2, 3, 3])
+```
+
+## Problem 10
+
+```elixir
+defmodule Problem10 do
+  def encode(list), do: encode(list, 1)
+
+  defp encode([head, head | tail], count) do
+    encode([head | tail], count + 1)
+  end
+
+  defp encode([head | tail], count) do
+    [[count, head] | encode(tail, 1)]
+  end
+
+  defp encode([], _), do: []
+end
+```
+
+```elixir
+Problem10.encode(~w(a a a a b c c a a d e e e e))
+```
+
+## Problem 11
+
+```elixir
+defmodule Problem11 do
+  def encode_modified(list), do: encode_modified(list, 1)
+
+  defp encode_modified([head, head | tail], count) do
+    encode_modified([head | tail], count + 1)
+  end
+
+  defp encode_modified([head | tail], 0) do
+    [head | encode_modified(tail, 1)]
+  end
+
+  defp encode_modified([head | tail], count) do
+    [[count, head] | encode_modified(tail, 1)]
+  end
+
+  defp encode_modified([], _), do: []
+end
+```
+
+```elixir
+Problem11.encode_modified(~w(a a a a b c c a a d e e e e))
+```
